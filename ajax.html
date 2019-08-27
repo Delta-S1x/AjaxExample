@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>ajax</title>
+
+  </head>
+  <body>
+    <button class="button" id="button" type="button" name="button">show text</button>
+    <button class="button" id="button2" type="button" name="button">show users</button>
+    <br><br>
+    <div>
+      <h1>USERS</h1>
+      <br>
+      <div id="users">
+
+      </div>
+    </div>
+
+    <script charset="utf-8">
+    document.getElementById('button').addEventListener("click", getText);
+
+
+    function getText(){
+      // create our xml http request object
+      var xhr = new XMLHttpRequest();
+       // open - type, url, async bool
+       xhr.open('GET', 'Text.txt', true);
+       xhr.onload =function(){
+         //xhr.status
+         if (this.status === 200){// HTTP STATUS CODES:   200=ok 403=FORBIDDEN 404=NOT FOUND
+           alert(this.responseText );//what you recieve from the get, text.txt
+         }else{
+           alert("Request Error");
+         };
+       };
+
+       xhr.onerror = function(){
+         alert("Request Error");
+       };
+       xhr.send();
+     };
+       document.getElementById('button2').addEventListener("click", getJson);
+
+       //////////JSON EXAMPLE//////
+       function getJson(){ // create our xml http request object
+         var jsonRequest = new XMLHttpRequest();
+          // open - type, url, async bool
+
+          jsonRequest.open('GET', 'example.json', true);
+
+          jsonRequest.onload =function(){
+            //xhr.status
+            if (this.status === 200){// HTTP STATUS CODES:   200=ok 403=FORBIDDEN 404=NOT FOUND
+              var output = '';
+              var users = JSON.parse(this.responseText);
+              for(var x in users){
+                let name = (users[x].name)
+                let job = (users[x].occupation)
+
+                output += '<ul><li>' + name +": "+ job + '</li></ul>';
+                console.log(output)
+              }
+              console.log(output)
+              document.getElementById('users').innerHTML = output;
+            }
+          }
+
+          jsonRequest.send();
+       };
+    </script>
+  </body>
+</html>
